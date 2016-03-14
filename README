@@ -1,0 +1,4 @@
+Java Agent that traces and measures invocation times of selected methods.
+
+Example usage:
+java -cp "target/test-classes;C:/Users/admin/.m2/repository/org/javassist/javassist/3.20.0-GA/javassist-3.20.0-GA.jar" -javaagent:target/tracing-agent-1.0-SNAPSHOT.jar pl.mdettlaff.tracingagent.SampleController
