@@ -7,6 +7,7 @@
     <groupId>pl.mdettlaff</groupId>
     <artifactId>tracing-agent</artifactId>
     <version>1.0-SNAPSHOT</version>
+
     <build>
         <plugins>
             <plugin>
@@ -15,6 +16,17 @@
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <Premain-Class>pl.mdettlaff.tracingagent.TracingAgent</Premain-Class>
+                        </manifestEntries>
+                    </archive>
                 </configuration>
             </plugin>
         </plugins>
