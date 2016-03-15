@@ -49,7 +49,7 @@ public class DefaultTransformer implements ClassFileTransformer {
 
 	private void addTracingToMethod(String className, CtMethod method) throws CannotCompileException {
 		method.addLocalVariable("TracingAgent_methodStartTime", CtClass.longType);
-		String methodDescription = className + "." + method.getName();
+		String methodDescription = className.replaceAll("([^/])[^/]*/", "$1.") + "." + method.getName();
 		String codeBefore = "System.out.println(\"perflog - TracingAgent - method " + methodDescription + " started\");\n";
 		codeBefore += "TracingAgent_methodStartTime = System.nanoTime();";
 		method.insertBefore(codeBefore);
