@@ -12,13 +12,13 @@ import java.lang.instrument.IllegalClassFormatException;
 import java.security.ProtectionDomain;
 import java.util.List;
 
-public class DefaultTransformer implements ClassFileTransformer {
+public class TracingTransformer implements ClassFileTransformer {
 
 	private ClassPool classPool;
 
 	private List<MethodFilter> filters;
 
-	public DefaultTransformer(List<MethodFilter> filters) {
+	public TracingTransformer(List<MethodFilter> filters) {
 		classPool = ClassPool.getDefault();
 		this.filters = filters;
 	}

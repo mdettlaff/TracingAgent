@@ -1,6 +1,7 @@
-package pl.mdettlaff.tracingagent;
+package pl.mdettlaff.tracingagent.filter;
 
 import javassist.CtMethod;
+import pl.mdettlaff.tracingagent.MethodFilter;
 
 public class ControllerFilter implements MethodFilter {
 
