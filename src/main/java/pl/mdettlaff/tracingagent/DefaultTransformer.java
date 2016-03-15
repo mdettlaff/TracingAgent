@@ -24,24 +24,28 @@ public class DefaultTransformer implements ClassFileTransformer {
 	}
 
 	public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
-		byte[] resultClassfile = classfileBuffer;
+		byte[] resultClassfile = null;
 		for (MethodMatcher matcher : matchers) {
 			if (matcher.matchesClassName(className)) {
 				try {
-					resultClassfile = addTracingToMethods(matcher, className, classfileBuffer);
+					resultClassfile = addTracingToMethods(className, classfileBuffer);
 				} catch (IOException | CannotCompileException e) {
 					throw new IllegalStateException("Cannot transform class " + className, e);
 				}
+				break;
 			}
 		}
 		return resultClassfile;
 	}
 
-	private byte[] addTracingToMethods(MethodMatcher matcher, String className, byte[] classfileBuffer) throws IOException, CannotCompileException {
+	private byte[] addTracingToMethods(String className, byte[] classfileBuffer) throws IOException, CannotCompileException {
 		CtClass ctClass = classPool.makeClass(new ByteArrayInputStream(classfileBuffer));
 		for (CtMethod method : ctClass.getDeclaredMethods()) {
-			if (matcher.matchesMethod(method)) {
-				addTracingToMethod(className, method);
+			for (MethodMatcher matcher : matchers) {
+				if (matcher.matchesClassName(className) && matcher.matchesMethod(method)) {
+					addTracingToMethod(className, method);
+					break;
+				}
 			}
 		}
 		return ctClass.toBytecode();
