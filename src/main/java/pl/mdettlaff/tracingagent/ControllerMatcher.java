@@ -6,11 +6,16 @@ public class ControllerMatcher implements MethodMatcher {
 
 	@Override
 	public boolean matchesClassName(String className) {
-		return className.endsWith("Controller");
+		return className.startsWith("pl/mdettlaff/");
 	}
 
 	@Override
 	public boolean matchesMethod(CtMethod method) {
-		return method.getName().equals("init");
+		try {
+			boolean hasAnnotation = method.getDeclaringClass().hasAnnotation(Class.forName("javax.annotation.Resource"));
+			return hasAnnotation && method.getName().equals("init");
+		} catch (ClassNotFoundException e) {
+			throw new IllegalStateException("Cannot filter method " + method.getName(), e);
+		}
 	}
 }

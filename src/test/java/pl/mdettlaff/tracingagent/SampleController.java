@@ -1,10 +1,13 @@
 package pl.mdettlaff.tracingagent;
 
+import javax.annotation.Resource;
+
+@Resource
 public class SampleController {
 
 	public static void main(String[] args) throws Exception {
 		SampleController controller = new SampleController();
-		while (true) {
+		for (int i = 0; i < 10; i++) {
 			controller.init();
 			controller.other();
 			Thread.sleep(1000);

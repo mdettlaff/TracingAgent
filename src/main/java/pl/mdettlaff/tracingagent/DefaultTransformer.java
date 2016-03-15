@@ -30,7 +30,7 @@ public class DefaultTransformer implements ClassFileTransformer {
 				try {
 					resultClassfile = addTracingToMethods(matcher, className, classfileBuffer);
 				} catch (IOException | CannotCompileException e) {
-					throw new IllegalStateException("cannot transform class " + className, e);
+					throw new IllegalStateException("Cannot transform class " + className, e);
 				}
 			}
 		}
