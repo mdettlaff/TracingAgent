@@ -2,7 +2,7 @@ package pl.mdettlaff.tracingagent;
 
 import javassist.CtMethod;
 
-public class ControllerMatcher implements MethodMatcher {
+public class ControllerFilter implements MethodFilter {
 
 	@Override
 	public boolean matchesClassName(String className) {

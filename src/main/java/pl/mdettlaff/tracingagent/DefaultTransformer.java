@@ -16,17 +16,17 @@ public class DefaultTransformer implements ClassFileTransformer {
 
 	private ClassPool classPool;
 
-	private List<MethodMatcher> matchers;
+	private List<MethodFilter> filters;
 
-	public DefaultTransformer(List<MethodMatcher> matchers) {
+	public DefaultTransformer(List<MethodFilter> filters) {
 		classPool = ClassPool.getDefault();
-		this.matchers = matchers;
+		this.filters = filters;
 	}
 
 	public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
 		byte[] resultClassfile = null;
-		for (MethodMatcher matcher : matchers) {
-			if (matcher.matchesClassName(className)) {
+		for (MethodFilter filter : filters) {
+			if (filter.matchesClassName(className)) {
 				try {
 					resultClassfile = addTracingToMethods(className, classfileBuffer);
 				} catch (IOException | CannotCompileException e) {
@@ -41,8 +41,8 @@ public class DefaultTransformer implements ClassFileTransformer {
 	private byte[] addTracingToMethods(String className, byte[] classfileBuffer) throws IOException, CannotCompileException {
 		CtClass ctClass = classPool.makeClass(new ByteArrayInputStream(classfileBuffer));
 		for (CtMethod method : ctClass.getDeclaredMethods()) {
-			for (MethodMatcher matcher : matchers) {
-				if (matcher.matchesClassName(className) && matcher.matchesMethod(method)) {
+			for (MethodFilter filter : filters) {
+				if (filter.matchesClassName(className) && filter.matchesMethod(method)) {
 					addTracingToMethod(className, method);
 					break;
 				}

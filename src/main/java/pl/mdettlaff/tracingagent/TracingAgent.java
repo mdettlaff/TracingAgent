@@ -7,7 +7,7 @@ public class TracingAgent {
 
 	public static void premain(String agentArgs, Instrumentation inst) {
 		System.out.println("starting tracing agent");
-		DefaultTransformer transformer = new DefaultTransformer(Collections.<MethodMatcher>singletonList(new ControllerMatcher()));
+		DefaultTransformer transformer = new DefaultTransformer(Collections.<MethodFilter>singletonList(new ControllerFilter()));
 		inst.addTransformer(transformer);
 	}
 }
