@@ -40,15 +40,17 @@ public class DefaultTransformer implements ClassFileTransformer {
 
 	private byte[] addTracingToMethods(String className, byte[] classfileBuffer) throws IOException, CannotCompileException {
 		CtClass ctClass = classPool.makeClass(new ByteArrayInputStream(classfileBuffer));
+		boolean anyMatch = false;
 		for (CtMethod method : ctClass.getDeclaredMethods()) {
 			for (MethodFilter filter : filters) {
 				if (filter.matchesClassName(className) && filter.matchesMethod(method)) {
 					addTracingToMethod(className, method);
+					anyMatch = true;
 					break;
 				}
 			}
 		}
-		return ctClass.toBytecode();
+		return anyMatch ? ctClass.toBytecode() : null;
 	}
 
 	private void addTracingToMethod(String className, CtMethod method) throws CannotCompileException {
