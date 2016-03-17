@@ -13,8 +13,7 @@ public class ControllerFilter implements MethodFilter {
 	@Override
 	public boolean matchesMethod(CtMethod method) {
 		try {
-			boolean hasAnnotation = method.getDeclaringClass().hasAnnotation(Class.forName("javax.annotation.Resource"));
-			return hasAnnotation && method.getName().equals("init");
+			return method.getName().equals("init") && method.getDeclaringClass().hasAnnotation(Class.forName("javax.annotation.Resource"));
 		} catch (ClassNotFoundException e) {
 			throw new IllegalStateException("Cannot filter method " + method.getName(), e);
 		}
